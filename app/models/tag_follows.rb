@@ -4,4 +4,3 @@ class TagFollow < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :tag_id }
 end
-  
