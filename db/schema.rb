@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_06_220241) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_06_232857) do
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "post_id", null: false
@@ -70,6 +70,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_06_220241) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "tag_follows", primary_key: ["user_id", "tag_id"], force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_tag_follows_on_tag_id"
+    t.index ["user_id", "tag_id"], name: "index_tag_follows_on_user_id_and_tag_id", unique: true
+    t.index ["user_id"], name: "index_tag_follows_on_user_id"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -98,4 +108,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_06_220241) do
   add_foreign_key "post_tags", "posts"
   add_foreign_key "post_tags", "tags"
   add_foreign_key "posts", "users"
+  add_foreign_key "tag_follows", "tags"
+  add_foreign_key "tag_follows", "users"
 end
