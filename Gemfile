@@ -52,6 +52,9 @@ group :development, :test do
 
   # Linter for code style
   gem "rubocop", require: false
+
+  # Testing tool
+  gem "rspec-rails", "~> 7.0.0"
 end
 
 group :development do
