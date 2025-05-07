@@ -1,0 +1,11 @@
+<p>
+  <%= comment.parent_comment_id.present? ? "-- " : "" %>
+  <strong><%= comment.user.username %>:</strong>
+  <%= comment.content %>
+</p>
+
+<%= link_to 'Reply', new_comment_path(parent_comment_id: comment.id, post_id: comment.post_id) %>
+
+<% comment.replies.includes(:user).each do |reply| %>
+  <%= render partial: 'posts/comment', locals: { comment: reply } %>
+<% end %>
