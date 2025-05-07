@@ -93,14 +93,14 @@ Post.includes(:user).each do |post|
   comment = Comment.create!(
     user: commenter,
     post: post,
-    content: "#{commenter.username} says: I really liked this post!"
+    content: "I really liked this post!"
   )
 
   Comment.create!(
     user: post.user,
     post: post,
     parent_comment_id: comment.id,
-    content: "#{post.user.username} replies: Thank you for your feedback!"
+    content: "Thank you for your feedback!"
   )
 end
 
