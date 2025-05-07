@@ -1,15 +1,20 @@
 Rails.application.routes.draw do
-  root 'home#index'
-  resources :users
+  root "home#index"
+  resources :users do
+    member do
+      get "followers"
+      get "following"
+    end
+  end
   resources :posts do
-    resources :post_tags, only: [:index, :create, :destroy]
+    resources :post_tags, only: [ :index, :create, :destroy ]
   end
   resources :comments
-  resources :tags, only: [:index, :show, :create, :destroy]
-  resources :likes, only: [:index, :create, :destroy]
-  resources :bookmarks, only: [:index, :create, :destroy]
-  resources :follows, only: [:index, :create, :destroy]
-  resources :tag_follows, only: [:index, :create, :destroy]
+  resources :tags, only: [ :index, :show, :create, :destroy ]
+  resources :likes, only: [ :index, :create, :destroy ]
+  resources :bookmarks, only: [ :index, :create, :destroy ]
+  resources :follows, only: [ :index, :create, :destroy ]
+  resources :tag_follows, only: [ :index, :create, :destroy ]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

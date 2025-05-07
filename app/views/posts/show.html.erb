@@ -1,5 +1,5 @@
 <h1><%= @post.title %></h1>
-<p>by <%= @post.user.username %></p>
+<p>by <%= link_to @post.user.username, user_path(@post.user) %></p>
 <p><%= @post.content %></p>
 
 <h3>Tags:</h3>
