@@ -86,13 +86,21 @@ users.combination(2).each do |u1, u2|
   Follow.create!(following_user_id: u2.id, followed_user_id: u1.id)
 end
 
-puts "Creating comments"
-users.each_with_index do |user, i|
-  post = Post.offset(i % Post.count).first
-  Comment.create!(
-    user: user,
+puts "Creating comments with replies"
+Post.includes(:user).each do |post|
+  commenter = (users - [post.user]).sample
+
+  comment = Comment.create!(
+    user: commenter,
     post: post,
-    content: "#{user.username} says: I really liked this post!"
+    content: "#{commenter.username} says: I really liked this post!"
+  )
+
+  Comment.create!(
+    user: post.user,
+    post: post,
+    parent_comment_id: comment.id,
+    content: "#{post.user.username} replies: Thank you for your feedback!"
   )
 end
 
