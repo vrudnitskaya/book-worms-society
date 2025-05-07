@@ -5,7 +5,9 @@
 <h3>Tags:</h3>
 <ul>
   <% @tags.each do |tag| %>
-    <li><%= tag.name %></li>
+    <li>
+      <%= link_to "##{tag.name}", tag_path(tag.slug) %>
+    </li>
   <% end %>
 </ul>
 
