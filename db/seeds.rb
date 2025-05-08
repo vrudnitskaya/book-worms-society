@@ -88,7 +88,7 @@ end
 
 puts "Creating comments with replies"
 Post.includes(:user).each do |post|
-  commenter = (users - [post.user]).sample
+  commenter = (users - [ post.user ]).sample
 
   comment = Comment.create!(
     user: commenter,
