@@ -1,0 +1,20 @@
+<h1><%= @post.title %></h1>
+<p>by <%= link_to @post.user.username, user_path(@post.user) %></p>
+<p><%= @post.content %></p>
+
+<h3>Tags:</h3>
+<ul>
+  <% @tags.each do |tag| %>
+    <li>
+      <%= link_to "##{tag.name}", tag_path(tag.slug) %>
+    </li>
+  <% end %>
+</ul>
+
+<h3>Likes: <%= @like_count %></h3>
+<h3>Bookmarks: <%= @bookmark_count %></h3>
+
+<h3>Comments:</h3>
+<%= render partial: 'posts/comment', collection: @comments, as: :comment %>
+
+<%= link_to 'Back to Home', root_path %>
