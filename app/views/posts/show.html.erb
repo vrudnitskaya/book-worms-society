@@ -21,6 +21,7 @@
 
 <h3>Likes: <%= @like_count %></h3>
 <h3>Bookmarks: <%= @bookmark_count %></h3>
+<%= button_to 'Like', likes_path(likeable_type: 'Post', likeable_id: @post.id), method: :post %>
 
 <h3>Comments:</h3>
 <%= render partial: 'posts/comment', collection: @comments, as: :comment %>
