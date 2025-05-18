@@ -1,6 +1,14 @@
 <h1><%= @post.title %></h1>
 <p>by <%= link_to @post.user.username, user_path(@post.user) %></p>
+
+<% if @post.image_url.present? %>
+  <div>
+    <%= image_tag @post.image_url, alt: "Post image", style: "max-width: 100%; height: auto;" %>
+  </div>
+<% end %>
 <p><%= @post.content %></p>
+
+<%= link_to 'Edit Post', edit_post_path(@post) %>
 
 <h3>Tags:</h3>
 <ul>
