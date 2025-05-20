@@ -26,5 +26,6 @@
 
 <h3>Comments:</h3>
 <%= render partial: 'posts/comment', collection: @comments, as: :comment %>
+<%= link_to 'Add Comment', new_comment_path(post_id: @post.id) %>
 
 <%= link_to 'Back to Home', root_path %>
