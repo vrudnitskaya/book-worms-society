@@ -23,7 +23,7 @@
     <%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" %>
     <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" %>
     <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" %>
-    
+
     <%= javascript_importmap_tags %>
   </head>
 
@@ -38,6 +38,8 @@
 
      <script>
       document.addEventListener("turbo:load", function() {
+        toastr.clear();
+        
         <% if flash[:notice] %>
           toastr.clear();  
           toastr.success("<%= j flash[:notice] %>", { timeOut: 2000 });

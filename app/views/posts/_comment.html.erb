@@ -7,6 +7,9 @@
   <p>Likes: <%= comment.likes.count %></p>
   <%= button_to 'Like', likes_path(likeable_type: 'Comment', likeable_id: comment.id), method: :post %>
 
+  <% if comment.user_id == comment.user.id %>
+    <%= link_to 'Edit', edit_comment_path(comment) %>
+  <% end %>
   <%= link_to 'Reply', new_comment_path(parent_comment_id: comment.id, post_id: comment.post_id) %>
 
   <% comment.replies.includes(:user).each do |reply| %>
