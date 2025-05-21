@@ -16,7 +16,16 @@ class LikesController < ApplicationController
   private
 
   def set_likeable
-    klass = params[:likeable_type].classify.constantize
-    @likeable = klass.find(params[:likeable_id])
+    likeable_type = params[:likeable_type]
+  
+    case likeable_type
+    when "Post"
+      @likeable = Post.find(params[:likeable_id])
+    when "Comment"
+      @likeable = Comment.find(params[:likeable_id])
+    else
+      redirect_back fallback_location: root_path, alert: "Invalid likeable type"
+      return
+    end
   end
 end

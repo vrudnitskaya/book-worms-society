@@ -10,7 +10,7 @@ class PostsController < ApplicationController
     random_user = User.order("RANDOM()").first
 
     unless random_user
-      redirect_to root_path, alert: 'No users found to assign this post.'
+      redirect_to root_path, alert: "No users found to assign this post."
       return
     end
 
@@ -18,12 +18,12 @@ class PostsController < ApplicationController
     @post.user = random_user
 
     if @post.save
-      redirect_to @post, notice: 'Post was successfully created.'
+      redirect_to @post, notice: "Post was successfully created."
     else
       render :new
     end
   end
-  
+
   def show
     @tags = @post.tags
     @like_count = @post.likes.count

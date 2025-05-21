@@ -66,17 +66,17 @@ RSpec.describe "Posts", type: :request do
     it "redirects to root if no users exist" do
       Post.destroy_all
       User.destroy_all
-    
+
       post posts_path, params: {
         post: {
           title: "This Test",
           content: "Should fail"
         }
       }
-    
+
       expect(response).to redirect_to(root_path)
       follow_redirect!
-    
+
       expect(response.body).to include("No users found to assign this post.")
     end
   end
