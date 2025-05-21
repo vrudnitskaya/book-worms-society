@@ -1,6 +1,14 @@
 <h1><%= @post.title %></h1>
 <p>by <%= link_to @post.user.username, user_path(@post.user) %></p>
+
+<% if @post.image_url.present? %>
+  <div>
+    <%= image_tag @post.image_url, alt: "Post image", style: "max-width: 100%; height: auto;" %>
+  </div>
+<% end %>
 <p><%= @post.content %></p>
+
+<%= link_to 'Edit Post', edit_post_path(@post) %>
 
 <h3>Tags:</h3>
 <ul>
@@ -13,8 +21,11 @@
 
 <h3>Likes: <%= @like_count %></h3>
 <h3>Bookmarks: <%= @bookmark_count %></h3>
+<%= button_to 'Like', likes_path(likeable_type: 'Post', likeable_id: @post.id), method: :post %>
+<%= button_to 'Add Bookmark', bookmarks_path(post_id: @post.id), method: :post %>
 
 <h3>Comments:</h3>
 <%= render partial: 'posts/comment', collection: @comments, as: :comment %>
+<%= link_to 'Add Comment', new_comment_path(post_id: @post.id) %>
 
 <%= link_to 'Back to Home', root_path %>

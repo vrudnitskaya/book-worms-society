@@ -5,7 +5,7 @@ class Post < ApplicationRecord
   has_many :tags, through: :post_tags
   has_many :bookmarks
   has_many :users, through: :bookmarks
-  has_many :likes, as: :likeable
+  has_many :likes, as: :likeable, dependent: :destroy
 
   validates :title, presence: true
   validates :content, presence: true
