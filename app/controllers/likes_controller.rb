@@ -17,7 +17,7 @@ class LikesController < ApplicationController
 
   def set_likeable
     likeable_type = params[:likeable_type]
-  
+
     case likeable_type
     when "Post"
       @likeable = Post.find(params[:likeable_id])
@@ -25,7 +25,7 @@ class LikesController < ApplicationController
       @likeable = Comment.find(params[:likeable_id])
     else
       redirect_back fallback_location: root_path, alert: "Invalid likeable type"
-      return
+      nil
     end
   end
 end
