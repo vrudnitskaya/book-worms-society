@@ -14,33 +14,15 @@
   </head>
 
   <body>
-    <nav>
-      <%= link_to 'New Post', new_post_path %>
-      <%= link_to 'Login', '#' %>
-      <%= link_to 'Join', '#' %>
-    </nav>
+    <%= render "layouts/header" %>
 
-    <div style="position: fixed; top: 1rem; right: 1rem; width: 15rem; z-index: 1050;">
-      <% flash.each do |type, message| %>
-        <% bootstrap_class = case type.to_sym
-          when :notice then "alert-success"
-          when :alert  then "alert-danger"
-          when :warning then "alert-warning"
-          when :info then "alert-info"
-          else "alert-secondary"
-        end %>
-
-        <div
-          class="alert <%= bootstrap_class %> fade show auto-dismiss-alert"
-          role="alert"
-          style="margin-bottom: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15);"
-        >
-          <%= message %>
-        </div>
-      <% end %>
-    </div>
-
-    <%= yield %>
+    <%= render "layouts/flashes" %>
+    
+    <main>
+      <%= yield %>
+    </main>
+    
+    <%= render "layouts/footer" %>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

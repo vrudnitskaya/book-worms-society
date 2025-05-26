@@ -1,0 +1,14 @@
+<header>
+  <div class="d-flex justify-content-between py-3 mx-3">
+    <% if current_page?(root_path) %>
+      <%= image_tag "book.png", alt: "Book Icon", width: 40, height: 40 %>
+    <% else %>
+      <h1 class="h3">Book Worms Society</h1>
+    <% end %>
+    <nav class="d-flex align-items-center gap-3">
+      <%= link_to 'New Post', new_post_path %>
+      <%= link_to 'Login', '#' %>
+      <%= link_to 'Join', '#' %>
+    </nav>
+  </div>
+</header>
