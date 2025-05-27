@@ -1,0 +1,17 @@
+<h2><%= @comment.parent_comment_id ? "Reply to Comment" : "Add Comment" %></h2>
+
+<%= form_with model: @comment, local: true do |form| %>
+  <%= form.hidden_field :post_id %>
+  <%= form.hidden_field :parent_comment_id %>
+
+  <div>
+    <%= form.label :content %><br>
+    <%= form.text_area :content %>
+  </div>
+
+  <div>
+    <%= form.submit "Post" %>
+  </div>
+<% end %>
+
+<%= link_to 'Back to Post', post_path(@comment.post_id) %>

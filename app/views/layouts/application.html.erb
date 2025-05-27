@@ -19,15 +19,47 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+
+    <%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" %>
+    <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" %>
+    <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" %>
+
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
   <nav>
-  <%= link_to 'Login', '#' %>
-  <%= link_to 'Join', '#' %>
+    <%= link_to 'New Post', new_post_path %>
+    <%= link_to 'Login', '#' %>
+    <%= link_to 'Join', '#' %>
   </nav>
-  
+
     <%= yield %>
+
+     <script>
+      document.addEventListener("turbo:load", function() {
+        toastr.clear();
+        
+        <% if flash[:notice] %>
+          toastr.clear();  
+          toastr.success("<%= j flash[:notice] %>", { timeOut: 2000 });
+        <% end %>
+
+        <% if flash[:alert] %>
+          toastr.clear();  
+          toastr.error("<%= j flash[:alert] %>", { timeOut: 2000 });
+        <% end %>
+
+        <% if flash[:warning] %>
+          toastr.clear(); 
+          toastr.warning("<%= j flash[:warning] %>", { timeOut: 2000 });
+        <% end %>
+
+        <% if flash[:info] %>
+          toastr.clear();  
+          toastr.info("<%= j flash[:info] %>", { timeOut: 2000 });
+        <% end %>
+      });
+    </script>
   </body>
 </html>
