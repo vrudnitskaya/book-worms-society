@@ -1,27 +1,36 @@
-<%= image_tag "banner_home.png", style: "width: 100%; height: auto;", alt: "home page banner", width: 200 %>
+<%= image_tag "banner_home.png",
+              style: "width: 100%; height: auto;",
+              alt: "home page banner",
+              width: 200 %>
 
-<div>
-  <h2>Recent Posts</h2>
-  <% if @recent_posts.any? %>
-    <% @recent_posts.each do |post| %>
-      <div>
-        <h3><%= link_to post.title, post_path(post) %></h3>
-        <p>by <%= link_to post.user.username, user_path(post.user) %></p>
-        <p><%= truncate(post.content, length: 120) %></p>
-      </div>
+<div class="d-flex gap-5 mx-5 my-4">
+  <div class="flex-grow-1">
+    <h2 >Recent Posts</h2>
+    
+    <% if @recent_posts.any? %>
+      <% @recent_posts.each do |post| %>
+        <div class="pb-2">
+          <h4><%= link_to post.title, post_path(post) %></h3>
+          <p class="mb-1">
+            by <%= link_to post.user.username, user_path(post.user) %>
+          </p>
+          <p><%= truncate(post.content, length: 120) %></p>
+          <hr style="border: none; border-bottom: 2px solid var(--bs-primary);">
+        </div>
+      <% end %>
+    <% else %>
+      <p>No posts yet.</p>
     <% end %>
-  <% else %>
-    <p>No posts yet.</p>
-  <% end %>
-</div>
+  </div>
 
-<div>
-  <h2>Top Tags</h2>
-  <ul>
-    <% @top_tags.each do |tag| %>
-      <li>
-        <%= link_to "##{tag.name}", tag_path(tag.slug) %>
-      </li>
-    <% end %>
-  </ul>
+  <div class="flex-shrink-0" style="min-width: 20%">
+    <h2>Top Tags</h2>
+    <ul class="list-unstyled">
+      <% @top_tags.each do |tag| %>
+        <li>
+          <%= link_to "##{tag.name}", tag_path(tag.slug) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 </div>
