@@ -1,26 +1,45 @@
 @import "variables.css";
-
+html{
+    min-height: 100%;
+}
 body {
-  color: var(--bs-body-color);
+    min-height: 100vh;
+    color: var(--bs-body-color);
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+a {
+    text-decoration: none;
+    color: #462050;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 /* alerts styles  */
 .alert-success {
-  background-color: var(--bs-success);
-  color: #fff;
+    background-color: var(--bs-success);
+    color: #fff;
 }
 
 .alert-danger {
-  background-color: var(--bs-danger);
-  color: #fff;
+    background-color: var(--bs-danger);
+    color: #fff;
 }
 
 .alert-warning {
-  background-color: var(--bs-warning);
-  color: var(--bs-body-color);
+    background-color: var(--bs-warning);
+    color: var(--bs-body-color);
 }
 
 .alert-info {
-  background-color: var(--bs-info);
-  color: var(--bs-body-color);
+    background-color: var(--bs-info);
+    color: var(--bs-body-color);
 }
