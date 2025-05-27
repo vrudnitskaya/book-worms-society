@@ -1,16 +1,25 @@
 <div style="margin-left: <%= comment.parent_comment_id ? '20px' : '0' %>;">
-  <p>
+  <p class="mb-1">
     <strong><%= comment.user.username %>:</strong>
     <%= comment.content %>
   </p>
 
-  <p>Likes: <%= comment.likes.count %></p>
-  <%= button_to 'Like', likes_path(likeable_type: 'Comment', likeable_id: comment.id), method: :post %>
+  <div class="d-flex align-items-center gap-3 mb-2 text-muted small">
+    <%= link_to 'Reply', new_comment_path(parent_comment_id: comment.id, post_id: comment.post_id), class: "text-decoration-none" %>
 
-  <% if comment.user_id == comment.user.id %>
-    <%= link_to 'Edit', edit_comment_path(comment) %>
-  <% end %>
-  <%= link_to 'Reply', new_comment_path(parent_comment_id: comment.id, post_id: comment.post_id) %>
+    <% if comment.user_id == comment.user.id %>
+      <%= link_to 'Edit', edit_comment_path(comment), class: "text-decoration-none" %>
+    <% end %>
+
+    <%= button_to likes_path(likeable_type: 'Comment', likeable_id: comment.id),
+                  method: :post,
+                  class: "btn p-0 border-0 bg-transparent d-flex align-items-center gap-1",
+                  data: { bs_toggle: "tooltip" },
+                  title: "Like this comment" do %>
+      <i class="fa-solid fa-heart"></i>
+      <%= comment.likes.count %>
+    <% end %>
+  </div>
 
   <% comment.replies.includes(:user).each do |reply| %>
     <%= render partial: 'posts/comment', locals: { comment: reply } %>
