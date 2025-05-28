@@ -5,7 +5,7 @@
 
 <div class="d-flex gap-5 mx-5 my-4">
   <div class="flex-grow-1">
-    <h2 >Recent Posts</h2>
+    <h2 class="mb-3">Recent Posts</h2>
     
     <% if @recent_posts.any? %>
       <% @recent_posts.each do |post| %>
@@ -24,7 +24,7 @@
   </div>
 
   <div class="flex-shrink-0" style="min-width: 20%">
-    <h2>Top Tags</h2>
+    <h2 class="mb-3">Top Tags</h2>
     <ul class="list-unstyled">
       <% @top_tags.each do |tag| %>
         <li>
