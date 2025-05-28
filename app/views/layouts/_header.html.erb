@@ -1,16 +1,20 @@
 <header>
   <div class="d-flex justify-content-between align-items-center mx-5", style="height: 4rem">
     <% if current_page?(root_path) %>
-      <%= image_tag "book2.png", alt: "Book Icon", width: 40, height: 40 %>
+    <h1 class="h2" style="font-family: 'Amatic SC'; font-weight: 700;">BWS</h1>
     <% else %>
-      <h1 class="h2" style="font-family: 'Amatic SC'; font-weight: 700;">
-        <%= link_to "Book Worms Society", root_path, style: "text-decoration: none; color: inherit;" %>
-      </h1>
+    <h1 class="h2" style="font-family: 'Amatic SC'; font-weight: 700;">
+      <%= link_to "Book Worms Society", root_path, style: "text-decoration: none; color: inherit;" %>
+    </h1>
     <% end %>
     <nav class="d-flex align-items-center gap-3">
-      <%= link_to 'New Post', new_post_path %>
-      <%= link_to 'Login', '#' %>
-      <%= link_to 'Join', '#' %>
+      <%= link_to new_post_path, style: 'color: var(--bs-primary);' do %>
+      <i class="fa-solid fa-plus"></i> New Post
+      <% end %>
+      <%= link_to '#' do %>
+      <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+      <% end %>
+      <%= link_to 'Join', '#', style: 'background: var(--bs-primary); color: white; font-weight: bold; padding: 0.5rem 1rem; border-radius: 0.5rem; text-decoration: none;' %>
     </nav>
   </div>
 </header>
