@@ -1,31 +1,53 @@
-<h1><%= @post.title %></h1>
-<p>by <%= link_to @post.user.username, user_path(@post.user) %></p>
-
-<% if @post.image_url.present? %>
+<div class="d-flex flex-column mx-5 my-2">
+  <h1 class="h3"><%= @post.title %></h1>
+  <p>by <%= link_to @post.user.username, user_path(@post.user) %></p>
+  <% if @post.image_url.present? %>
   <div>
-    <%= image_tag @post.image_url, alt: "Post image", style: "max-width: 100%; height: auto;" %>
+    <%= image_tag @post.image_url, alt: "Post image", style: "max-width: 10rem; height: auto;" %>
   </div>
-<% end %>
-<p><%= @post.content %></p>
-
-<%= link_to 'Edit Post', edit_post_path(@post) %>
-
-<h3>Tags:</h3>
-<ul>
-  <% @tags.each do |tag| %>
-    <li>
-      <%= link_to "##{tag.name}", tag_path(tag.slug) %>
-    </li>
   <% end %>
-</ul>
-
-<h3>Likes: <%= @like_count %></h3>
-<h3>Bookmarks: <%= @bookmark_count %></h3>
-<%= button_to 'Like', likes_path(likeable_type: 'Post', likeable_id: @post.id), method: :post %>
-<%= button_to 'Add Bookmark', bookmarks_path(post_id: @post.id), method: :post %>
-
-<h3>Comments:</h3>
-<%= render partial: 'posts/comment', collection: @comments, as: :comment %>
-<%= link_to 'Add Comment', new_comment_path(post_id: @post.id) %>
-
-<%= link_to 'Back to Home', root_path %>
+  <p class="mt-3" style="width: 75%"><%= @post.content %></p>
+  <%= link_to 'Edit Post', edit_post_path(@post) %>
+  <div class="d-flex align-items-center gap-2 flex-wrap my-2">
+    <h3 class="h5 mb-0">Tags:</h3>
+    <ul class="d-flex gap-2 mb-0 list-unstyled flex-wrap">
+      <% @tags.each do |tag| %>
+      <li>
+        <%= link_to "##{tag.name}", tag_path(tag.slug) %>
+      </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="d-flex gap-2 my-2">
+    <%= button_to likes_path(likeable_type: 'Post', likeable_id: @post.id),
+      method: :post,
+      class: "btn p-0 border-0 bg-transparent",
+      data: { bs_toggle: "tooltip" },
+      title: "Like this post" do %>
+    <span class="d-flex align-items-center gap-2">
+    <i class="fa-solid fa-heart"></i>
+    <%= @like_count %>
+    </span>
+    <% end %>
+    <%= button_to bookmarks_path(post_id: @post.id),
+      method: :post,
+      class: "btn p-0 border-0 bg-transparent",
+      data: { bs_toggle: "tooltip" },
+      title: "Add to bookmarks" do %>
+    <span class="d-flex align-items-center gap-2">
+    <i class="fa-solid fa-bookmark"></i>
+    <%= @bookmark_count %>
+    </span>
+    <% end %>
+  </div>
+  <div>
+  <h3 class="h4">Comments</h3>
+  <%= link_to 'Add Comment', new_comment_path(post_id: @post.id) %>
+  <%= render partial: 'posts/comment', collection: @comments, as: :comment %>
+  </div>
+  
+  <div class="mt-5">
+  <%= link_to 'Back to Home', root_path%>
+  </div>
+  
+</div>

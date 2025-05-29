@@ -1,32 +1,31 @@
-<%= form_with(model: @post, local: true) do |form| %>
-    <% if @post.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
-        <ul>
-          <% @post.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-  
-    <div>
-      <%= form.label :title %><br>
-      <%= form.text_field :title %>
-    </div>
-  
-    <div>
-      <%= form.label :content %><br>
-      <%= form.text_area :content %>
-    </div>
-
-    <div>
-      <%= form.label :image_url, "Image URL" %><br>
-      <%= form.text_field :image_url %>
-    </div>
-  
-    <div>
-      <%= form.submit %>
+<%= form_with(model: @post, local: true, html: { class: "needs-validation" }) do |form| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h4><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h4>
+      <ul>
+        <% @post.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
-  
+
+  <div class="mb-3">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :content, class: "form-label" %>
+    <%= form.text_area :content, class: "form-control", rows: 5, required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :image_url, "Image URL", class: "form-label" %>
+    <%= form.text_field :image_url, class: "form-control" %>
+  </div>
+
+  <div class="mt-4">
+    <%= form.submit "Save", class: "btn btn-success" %>
+  </div>
+<% end %>
