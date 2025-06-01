@@ -1,26 +1,19 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [ :show, :edit, :update ]
+  before_action :require_login, only: [:new, :create, :edit, :update]
+  before_action :set_post, only: [:show, :edit, :update]
+  before_action :authorize_user!, only: [:edit, :update]
 
   def new
     @post = Post.new
   end
 
-  # we temporary use the random user to create the post
   def create
-    random_user = User.order("RANDOM()").first
-
-    unless random_user
-      redirect_to root_path, alert: "No users found to assign this post."
-      return
-    end
-
-    @post = Post.new(post_params)
-    @post.user = random_user
+    @post = current_user.posts.new(post_params)
 
     if @post.save
       redirect_to @post, notice: "Post was successfully created."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -38,7 +31,7 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to @post, notice: "Post was successfully updated."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -46,6 +39,12 @@ class PostsController < ApplicationController
 
   def set_post
     @post = Post.find(params[:id])
+  end
+
+  def authorize_user!
+    unless @post.user == current_user
+      redirect_to @post, alert: "You have no permission to edit this post."
+    end
   end
 
   def post_params
