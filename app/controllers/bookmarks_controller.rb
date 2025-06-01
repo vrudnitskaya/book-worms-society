@@ -1,7 +1,7 @@
 class BookmarksController < ApplicationController
   before_action :require_login
   before_action :set_post
-  
+
   def create
     bookmark = Bookmark.find_by(user_id: current_user.id, post_id: @post.id)
 
