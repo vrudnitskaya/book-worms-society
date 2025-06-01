@@ -23,7 +23,7 @@
                   class: "btn p-0 border-0 bg-transparent d-flex align-items-center gap-1",
                   data: { bs_toggle: "tooltip" },
                   title: "Like this comment" do %>
-      <i class="fa-solid fa-heart"></i>
+       <i class="fa-solid fa-heart <%= 'text-danger' if @liked_comment_ids.include?(comment.id) %>"></i>
       <%= comment.likes.count %>
     <% end %>
   </div>

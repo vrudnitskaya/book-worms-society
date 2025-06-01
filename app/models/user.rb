@@ -13,4 +13,5 @@ class User < ApplicationRecord
   has_many :followers, through: :followed_relationships, source: :following_user
   has_many :tag_follows
   has_many :tags, through: :tag_follows
+  has_many :likes, dependent: :destroy
 end

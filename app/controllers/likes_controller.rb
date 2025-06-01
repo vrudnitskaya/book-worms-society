@@ -1,15 +1,24 @@
 class LikesController < ApplicationController
+  before_action :require_login
   before_action :set_likeable
 
   def create
-    #  temporary
-    user = User.where.not(id: @likeable.user_id).order("RANDOM()").first
-    like = @likeable.likes.build(user: user)
+    existing_like = @likeable.likes.find_by(user_id: current_user.id)
 
-    if like.save
-      redirect_back fallback_location: root_path, notice: "Liked successfully"
+    if existing_like
+      if existing_like.user_id == current_user.id
+        existing_like.destroy
+        redirect_back fallback_location: root_path, notice: "Like removed."
+      else
+        render "errors/forbidden", status: :forbidden
+      end
     else
-      redirect_back fallback_location: root_path, alert: "Unable to like"
+      like = @likeable.likes.build(user: current_user)
+      if like.save
+        redirect_back fallback_location: root_path, notice: "Liked successfully."
+      else
+        redirect_back fallback_location: root_path, alert: "Unable to like."
+      end
     end
   end
 

@@ -41,7 +41,7 @@
       data: { bs_toggle: "tooltip" },
       title: "Like this post" do %>
     <span class="d-flex align-items-center gap-2">
-    <i class="fa-solid fa-heart"></i>
+    <i class="fa-solid fa-heart <%= 'text-danger' if @user_liked %>"></i>
     <%= @like_count %>
     </span>
     <% end %>
