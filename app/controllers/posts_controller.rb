@@ -48,7 +48,7 @@ class PostsController < ApplicationController
 
   def authorize_user!
     unless @post.user == current_user
-      redirect_to "/403"
+      render "errors/forbidden", status: :forbidden
     end
   end
 
