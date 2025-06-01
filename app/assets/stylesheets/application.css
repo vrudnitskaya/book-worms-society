@@ -1,4 +1,13 @@
-@import "variables.css";
+:root {
+    --bs-primary: #e074a5;
+    --bs-success: #558c46;
+    --bs-danger: #d9485c;
+    --bs-warning: #d0ad3d;
+    --bs-info: #decee2;
+  
+    --bs-body-color: #262923;
+}
+
 html{
     min-height: 100%;
 }
