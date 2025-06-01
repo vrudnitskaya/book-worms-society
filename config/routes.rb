@@ -33,4 +33,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  get '/404', to: 'errors#not_found'
+  match '*path', to: 'errors#not_found', via: :all
 end
