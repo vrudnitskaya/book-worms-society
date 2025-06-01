@@ -51,7 +51,7 @@
       data: { bs_toggle: "tooltip" },
       title: "Add to bookmarks" do %>
     <span class="d-flex align-items-center gap-2">
-    <i class="fa-solid fa-bookmark"></i>
+    <i class="fa-solid fa-bookmark <%= 'text-success' if @bookmarked %>"></i>
     <%= @bookmark_count %>
     </span>
     <% end %>

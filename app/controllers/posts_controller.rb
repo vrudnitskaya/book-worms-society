@@ -23,6 +23,7 @@ class PostsController < ApplicationController
     @user_liked = current_user && @post.likes.exists?(user_id: current_user.id)
     
     @bookmark_count = Bookmark.where(post_id: @post.id).count
+    @bookmarked = current_user && Bookmark.exists?(user: current_user, post: @post)
     @comments = @post.comments.where(parent_comment_id: nil).includes(:user)
     
     if current_user
