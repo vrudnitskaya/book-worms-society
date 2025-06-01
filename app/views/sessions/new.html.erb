@@ -1,0 +1,29 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <h1 class="h2 text-center mb-4">Login</h1>
+
+      <%= form_with url: login_path, method: :post, local: true do %>
+        <% if @error_message.present? %>
+  <div class="alert alert-danger small">
+    <i class="fa-solid fa-circle-exclamation me-1"></i> <%= @error_message %>
+  </div>
+<% end %>
+
+        <div class="mb-3">
+          <%= label_tag :email, "Email", class: "form-label" %>
+          <%= email_field_tag :email, params[:email], class: "form-control", required: true %>
+        </div>
+
+        <div class="mb-3">
+          <%= label_tag :password, "Password", class: "form-label" %>
+          <%= password_field_tag :password, nil, class: "form-control", required: true %>
+        </div>
+
+        <div class="mt-4 text-center">
+          <%= submit_tag "Login", class: "btn btn-success w-50" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
