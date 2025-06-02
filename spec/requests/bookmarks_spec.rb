@@ -25,6 +25,10 @@ RSpec.describe "Bookmarks", type: :request do
     )
   end
 
+  def login_as(user)
+    post login_path, params: { email: user.email, password: "password" }
+  end
+
   after do
     Bookmark.destroy_all
     Post.destroy_all
@@ -32,32 +36,46 @@ RSpec.describe "Bookmarks", type: :request do
   end
 
   describe "POST /bookmarks" do
-    it "creates a bookmark for a user" do
-      post "/bookmarks", params: { post_id: post_record.id }
+    context "when the user is not logged in" do
+      it "redirects to login" do
+        post "/bookmarks", params: { post_id: post_record.id }
 
-      expect(response).to redirect_to(post_path(post_record))
-      follow_redirect!
-      expect(response.body).to include("Bookmark created for user #{other_user.username}")
+        expect(response).to redirect_to(login_path)
+      end
     end
 
-    it "does not create a bookmark if it already exists" do
-      Bookmark.create!(user: other_user, post: post_record)
+    context "when the user is logged in" do
+      before do
+        login_as(other_user)
+      end
 
-      post "/bookmarks", params: { post_id: post_record.id }
+      it "creates a new bookmark" do
+        post "/bookmarks", params: { post_id: post_record.id }
 
-      expect(response).to redirect_to(post_path(post_record))
-      follow_redirect!
-      expect(response.body).to include("Bookmark already exists for user #{other_user.username}")
-    end
+        expect(response).to redirect_to(root_path)
+        follow_redirect!
+        expect(response.body).to include("Added to bookmarks.")
+        expect(Bookmark.last.user).to eq(other_user)
+      end
 
-    it "shows an error if bookmark cannot be saved" do
-      allow_any_instance_of(Bookmark).to receive(:save).and_return(false)
+      it "removes existing bookmark" do
+        Bookmark.create!(user: other_user, post: post_record)
 
-      post "/bookmarks", params: { post_id: post_record.id }
+        expect { post "/bookmarks", params: { post_id: post_record.id } }.to change { Bookmark.count }.by(-1)
 
-      expect(response).to redirect_to(post_path(post_record))
-      follow_redirect!
-      expect(response.body).to include("Failed to create bookmark")
+        follow_redirect!
+        expect(response.body).to include("Bookmark removed.")
+      end
+
+      it "fails to save bookmark" do
+        allow_any_instance_of(Bookmark).to receive(:save).and_return(false)
+
+        post "/bookmarks", params: { post_id: post_record.id }
+
+        expect(response).to redirect_to(root_path)
+        follow_redirect!
+        expect(response.body).to include("Failed to bookmark post.")
+      end
     end
   end
 end
