@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [ :edit, :update ]
-  before_action :authorize_user!, only: [ :edit, :update ]
+  before_action :require_login, only: [ :new, :create, :edit, :update, :destroy ]
+  before_action :set_comment, only: [ :edit, :update, :destroy ]
+  before_action :authorize_user!, only: [ :edit, :update, :destroy ]
 
   def new
     @comment = Comment.new(
@@ -10,9 +11,7 @@ class CommentsController < ApplicationController
   end
 
   def create
-    user = User.order("RANDOM()").first # after will be changed for current_user
-    @comment = Comment.new(comment_params)
-    @comment.user = user
+    @comment = current_user.comments.new(comment_params)
 
     if @comment.save
       redirect_to post_path(@comment.post_id), notice: "Comment added."
@@ -32,6 +31,12 @@ class CommentsController < ApplicationController
     end
   end
 
+  def destroy
+    post_id = @comment.post_id
+    @comment.destroy
+    redirect_to post_path(post_id), notice: "Comment deleted."
+  end
+
   private
 
   def set_comment
@@ -39,8 +44,8 @@ class CommentsController < ApplicationController
   end
 
   def authorize_user!
-    unless @comment.user_id == @comment.user.id
-      redirect_to post_path(@comment.post_id), alert: "You can only edit your own comments."
+    unless @comment.user == current_user
+      render "errors/forbidden", status: :forbidden
     end
   end
 

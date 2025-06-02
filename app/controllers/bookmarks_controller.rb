@@ -1,18 +1,31 @@
 class BookmarksController < ApplicationController
+  before_action :require_login
+  before_action :set_post
+
   def create
-    post = Post.find(params[:post_id])
-    user = User.where.not(id: post.user_id).order("RANDOM()").first
+    bookmark = Bookmark.find_by(user_id: current_user.id, post_id: @post.id)
 
-    bookmark = Bookmark.find_or_initialize_by(user: user, post: post)
-
-    if bookmark.persisted?
-      flash[:notice] = "Bookmark already exists for user #{user.username}"
-    elsif bookmark.save
-      flash[:notice] = "Bookmark created for user #{user.username}"
+    if bookmark
+      if bookmark.user_id == current_user.id
+        bookmark.destroy
+        redirect_back fallback_location: root_path, notice: "Bookmark removed."
+      else
+        render "errors/forbidden", status: :forbidden
+      end
     else
-      flash[:alert] = "Failed to create bookmark"
-    end
+      bookmark = Bookmark.new(user: current_user, post: @post)
 
-    redirect_to post_path(post)
+      if bookmark.save
+        redirect_back fallback_location: root_path, notice: "Added to bookmarks."
+      else
+        redirect_back fallback_location: root_path, alert: "Failed to bookmark post."
+      end
+    end
+  end
+
+  private
+
+  def set_post
+    @post = Post.find(params[:post_id])
   end
 end

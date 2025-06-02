@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
   root "home#index"
+  get "/signup", to: "registrations#new"
+  post "/signup", to: "registrations#create"
+  get "/login", to: "sessions#new"
+  post "/login", to: "sessions#create"
+  delete "/logout", to: "sessions#destroy"
   resources :users do
     member do
       get "followers"
@@ -11,8 +16,8 @@ Rails.application.routes.draw do
   end
   resources :comments
   resources :tags, only: [ :index, :show, :create, :destroy ]
-  resources :likes, only: [ :index, :create, :destroy ]
-  resources :bookmarks, only: [ :index, :create, :destroy ]
+  resources :likes, only: [ :index, :create ]
+  resources :bookmarks, only: [ :index, :create ]
   resources :follows, only: [ :index, :create, :destroy ]
   resources :tag_follows, only: [ :index, :create, :destroy ]
 
@@ -28,4 +33,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  get "/403", to: "errors#forbidden"
+  get "/404", to: "errors#not_found"
+  match "*path", to: "errors#not_found", via: :all
 end
