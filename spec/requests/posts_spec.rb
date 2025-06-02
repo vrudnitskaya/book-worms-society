@@ -17,6 +17,10 @@ RSpec.describe "Posts", type: :request do
     )
   end
 
+  def login_as(user)
+    post login_path, params: { email: user.email, password: "password" }
+  end
+
   after do
     Post.destroy_all
     User.destroy_all
@@ -41,10 +45,8 @@ RSpec.describe "Posts", type: :request do
   end
 
   describe "GET /posts/new" do
-    before do
-      post login_path, params: { email: user.email, password: "password" }
-    end
     it "renders the new post form" do
+      login_as(user)
       get new_post_path
 
       expect(response).to have_http_status(:ok)
@@ -53,10 +55,8 @@ RSpec.describe "Posts", type: :request do
   end
 
   describe "POST /posts" do
-    before do
-      post login_path, params: { email: user.email, password: "password" }
-    end
-    it "creates a new post with a random user" do
+    it "creates a new post" do
+      login_as(user)
       post_params = {
         post: {
           title: "New Test Post",
@@ -64,8 +64,6 @@ RSpec.describe "Posts", type: :request do
           image_url: "https://test.com/image.png"
         }
       }
-
-      expect(User.count).to be >= 1
 
       post posts_path, params: post_params
 
@@ -79,10 +77,8 @@ RSpec.describe "Posts", type: :request do
   end
 
   describe "GET /posts/:id/edit" do
-    before do
-      post login_path, params: { email: user.email, password: "password" }
-    end
     it "renders the edit form" do
+      login_as(user)
       get edit_post_path(post_record)
 
       expect(response).to have_http_status(:ok)
@@ -111,10 +107,8 @@ RSpec.describe "Posts", type: :request do
   end
 
   describe "PATCH /posts/:id" do
-    before do
-      post login_path, params: { email: user.email, password: "password" }
-    end
     it "updates the post successfully" do
+      login_as(user)
       patch post_path(post_record), params: {
         post: {
           title: "Updated Title",
@@ -130,6 +124,7 @@ RSpec.describe "Posts", type: :request do
     end
 
     it "renders edit if update fails" do
+      login_as(user)
       patch post_path(post_record), params: {
         post: {
           title: "",
