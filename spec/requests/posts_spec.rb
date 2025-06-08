@@ -17,6 +17,10 @@ RSpec.describe "Posts", type: :request do
     )
   end
 
+  def login_as(user)
+    post login_path, params: { email: user.email, password: "password" }
+  end
+
   after do
     Post.destroy_all
     User.destroy_all
@@ -32,8 +36,17 @@ RSpec.describe "Posts", type: :request do
     end
   end
 
+  describe "GET /posts/:id for non-existent post" do
+    it "renders the 404 error page" do
+      get post_path(id: "999999")
+      expect(response).to have_http_status(:not_found)
+      expect(response.body).to include("404")
+    end
+  end
+
   describe "GET /posts/new" do
     it "renders the new post form" do
+      login_as(user)
       get new_post_path
 
       expect(response).to have_http_status(:ok)
@@ -42,7 +55,8 @@ RSpec.describe "Posts", type: :request do
   end
 
   describe "POST /posts" do
-    it "creates a new post with a random user" do
+    it "creates a new post" do
+      login_as(user)
       post_params = {
         post: {
           title: "New Test Post",
@@ -50,8 +64,6 @@ RSpec.describe "Posts", type: :request do
           image_url: "https://test.com/image.png"
         }
       }
-
-      expect(User.count).to be >= 1
 
       post posts_path, params: post_params
 
@@ -62,27 +74,11 @@ RSpec.describe "Posts", type: :request do
       expect(response.body).to include("Post was successfully created.")
       expect(response.body).to include("New Test Post")
     end
-
-    it "redirects to root if no users exist" do
-      Post.destroy_all
-      User.destroy_all
-
-      post posts_path, params: {
-        post: {
-          title: "This Test",
-          content: "Should fail"
-        }
-      }
-
-      expect(response).to redirect_to(root_path)
-      follow_redirect!
-
-      expect(response.body).to include("No users found to assign this post.")
-    end
   end
 
   describe "GET /posts/:id/edit" do
     it "renders the edit form" do
+      login_as(user)
       get edit_post_path(post_record)
 
       expect(response).to have_http_status(:ok)
@@ -90,8 +86,29 @@ RSpec.describe "Posts", type: :request do
     end
   end
 
+  describe "GET /posts/:id/edit for another user" do
+    let!(:other_user) do
+      User.create!(
+        username: "another_user",
+        email: "another@example.com",
+        password: "password"
+      )
+    end
+
+    before do
+      post login_path, params: { email: other_user.email, password: "password" }
+    end
+
+    it "renders the 403 error page" do
+      get edit_post_path(post_record)
+      expect(response).to have_http_status(:forbidden)
+      expect(response.body).to include("403")
+    end
+  end
+
   describe "PATCH /posts/:id" do
     it "updates the post successfully" do
+      login_as(user)
       patch post_path(post_record), params: {
         post: {
           title: "Updated Title",
@@ -107,6 +124,7 @@ RSpec.describe "Posts", type: :request do
     end
 
     it "renders edit if update fails" do
+      login_as(user)
       patch post_path(post_record), params: {
         post: {
           title: "",
