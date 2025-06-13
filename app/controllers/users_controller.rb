@@ -9,6 +9,10 @@ class UsersController < ApplicationController
     @followers_count = @followers.count
     @following_count = @following.count
     @recent_posts = @user.posts.order(created_at: :desc).limit(3)
+
+    if logged_in? && current_user != @user
+      @is_following = current_user.followed_users.include?(@user)
+    end
   end
 
   def edit

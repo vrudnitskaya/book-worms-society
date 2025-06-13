@@ -129,5 +129,5 @@ select.form-control:focus {
 }
 
 .nav-tabs .nav-link:hover {
-  color: darken(var(--bs-primary), 10%); /* опционально — при наведении */
+  color: darken(var(--bs-primary), 10%);
 }
