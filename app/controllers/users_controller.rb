@@ -34,7 +34,7 @@ class UsersController < ApplicationController
   end
 
   def authorize_user
-    redirect_to root_path, alert: "Access denied." unless current_user == @user
+    redirect_to login_path, alert: "Access denied." unless current_user == @user
   end
 
   def user_params
