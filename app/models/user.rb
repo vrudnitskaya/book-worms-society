@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_secure_password
   validates :email, presence: true, uniqueness: true
   validates :username, presence: true, uniqueness: true, length: { minimum: 3 }
-  validates :password, length: { minimum: 5 }
+  validates :password, length: { minimum: 5 }, allow_nil: true, if: :password_required?
   has_many :posts
   has_many :comments
   has_many :bookmarks
@@ -14,4 +14,8 @@ class User < ApplicationRecord
   has_many :tag_follows
   has_many :tags, through: :tag_follows
   has_many :likes, dependent: :destroy
+
+  def password_required?
+    new_record? || password.present?
+  end
 end

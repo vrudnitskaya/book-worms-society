@@ -123,3 +123,11 @@ select.form-control:focus {
   border-color: #ddd;
   background-color: #f8f9fa;
 }
+
+.nav-tabs .nav-link {
+  color: var(--bs-primary);
+}
+
+.nav-tabs .nav-link:hover {
+  color: darken(var(--bs-primary), 10%); /* опционально — при наведении */
+}

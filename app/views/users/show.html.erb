@@ -1,24 +1,80 @@
-<h1><%= @user.username %></h1>
-
-<% if @user.avatar_url.present? %>
-  <%= image_tag @user.avatar_url, alt: "Avatar", width: 150, height: 150 %>
-<% end %>
-
-<p><strong>Bio:</strong> <%= @user.bio.presence || '—' %></p>
-<p><strong>Member since:</strong> <%= @user.created_at.strftime('%d %B %Y') %></p>
-
-<h3>Following: <%= @following_count %></h3>
-<ul>
-  <% @following.each do |user| %>
-    <li><%= link_to user.username, user_path(user) %></li>
-  <% end %>
-</ul>
-
-<h3>Followers: <%= @followers_count %></h3>
-<ul>
-  <% @followers.each do |user| %>
-    <li><%= link_to user.username, user_path(user) %></li>
-  <% end %>
-</ul>
-
-<%= link_to 'Back to Home', root_path %>
+<div class="d-flex flex-column px-5 py-4">
+  <div class="d-flex flex-row align-items-start gap-4 mb-4">
+    <% if @user.avatar_url.present? %>
+    <%= image_tag @user.avatar_url, alt: "Avatar", class: "rounded-circle", width: 150, height: 150 %>
+    <% else %>
+    <div style="width: 6rem; height: 6rem; border-radius: 50%; background-color: var(--bs-primary); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: bold; color: #FFF;">
+      <%= @user.username.first.upcase %>
+    </div>
+    <% end %>
+    <div class="flex-grow-1 d-flex justify-content-between">
+      <div>
+        <h2 class="mb-1">
+          <%= @user.username %> 
+        </h2>
+        <p class="text-muted"><%= @user.bio.presence || 'No bio yet.' %></p>
+        <p class="text-muted small">Member since: <%= @user.created_at.strftime('%B %d %Y') %></p>
+      </div>
+      <div class="w-50">
+        <% if current_user == @user %>
+        <%= link_to "Edit profile", edit_user_path(@user), class: "btn btn-primary mb-3" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-6">
+    <div class="overflow-auto" style="white-space: nowrap;">
+      <ul class="nav nav-tabs mb-3" id="profile-tabs" role="tablist" style="flex-wrap: nowrap;">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" id="following-tab" data-bs-toggle="tab" href="#following" role="tab">Following (<%= @following_count %>)</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="followers-tab" data-bs-toggle="tab" href="#followers" role="tab">Followers (<%= @followers_count %>)</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="posts-tab" data-bs-toggle="tab" href="#recent-posts" role="tab">Recent Posts</a>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-content p-2">
+      <div class="tab-pane fade show active" id="following" role="tabpanel">
+        <% if @following.any? %>
+        <ul class="list-unstyled">
+          <% @following.each do |user| %>
+          <li><%= link_to user.username, user_path(user), class: "text-decoration-none" %></li>
+          <% end %>
+        </ul>
+        <% else %>
+        <p class="text-muted">Not following anyone yet.</p>
+        <% end %>
+      </div>
+      <div class="tab-pane fade" id="followers" role="tabpanel">
+        <% if @followers.any? %>
+        <ul class="list-unstyled">
+          <% @followers.each do |user| %>
+          <li><%= link_to user.username, user_path(user), class: "text-decoration-none" %></li>
+          <% end %>
+        </ul>
+        <% else %>
+        <p class="text-muted">No followers yet.</p>
+        <% end %>
+      </div>
+      <div class="tab-pane fade" id="recent-posts" role="tabpanel">
+        <% if @recent_posts.any? %>
+        <ul class="list-unstyled">
+          <% @recent_posts.each do |post| %>
+          <li class="mb-2">
+            <strong><%= link_to post.title, post_path(post), class: "text-decoration-none" %></strong><br>
+            <small class="text-muted"><%= post.created_at.strftime('%B %d, %Y') %></small><br>
+            <p class="mb-0"><%= truncate(post.content, length: 50) %></p>
+            <hr style="border: none; border-bottom: 2px solid var(--bs-primary);">
+          </li>
+          <% end %>
+        </ul>
+        <% else %>
+        <p class="text-muted">No recent posts.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
