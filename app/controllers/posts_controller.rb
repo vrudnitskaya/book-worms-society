@@ -3,6 +3,32 @@ class PostsController < ApplicationController
   before_action :set_post, only: [ :show, :edit, :update, :destroy ]
   before_action :authorize_user!, only: [ :edit, :update, :destroy ]
 
+  def index
+    @top_tags = Tag.joins(:posts).group(:id).order("COUNT(posts.id) DESC").limit(10)
+
+    per_page = 4
+    page = params[:page].to_i
+    page = 1 if page < 1
+    offset = (page - 1) * per_page
+
+    base_query = if params[:filter] == "following" && current_user
+                    followed_ids = current_user.followed_users.pluck(:id)
+                    Post.where(user_id: followed_ids)
+                  else
+                    Post.all
+                  end
+
+    @total_posts = base_query.count
+    @posts = base_query
+             .includes(:user)
+             .order(created_at: :desc)
+             .limit(per_page)
+             .offset(offset)
+
+    @current_page = page
+    @total_pages = (@total_posts.to_f / per_page).ceil
+  end
+
   def new
     @post = Post.new
   end

@@ -2,7 +2,7 @@
    <div class="d-flex justify-content-between flex-column flex-md-row">
       <div class="col-12 col-md-9">
          <div class="d-flex gap-2">
-            <h2 class="mb-3 h3" style="color: var(--bs-primary)">
+            <h2 class="mb-3 h3">
             Posts with a tag "<%= @tag.name %>" 
             </h2>
             <% if logged_in? %>
@@ -29,7 +29,7 @@
          <% end %>
       </div>
       <div class="col-12 col-md-3">
-         <h2 class="mb-3 h3" style="color: var(--bs-primary)">Top Tags</h2>
+         <h2 class="mb-3 h3">Top Tags</h2>
          <ul class="list-unstyled">
             <% @top_tags.each do |tag| %>
             <li>
@@ -38,7 +38,7 @@
             <% end %>
          </ul>
          <hr style="border: none; border-bottom: 2px solid var(--bs-primary);">
-         <h2 class="mb-3 h3" style="color: var(--bs-primary)">Recent Posts</h2>
+         <h2 class="mb-3 h3">Recent Posts</h2>
          <ul class="list-unstyled">
             <% @recent_posts.each do |post| %>
             <li class="mb-1">

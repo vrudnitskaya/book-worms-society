@@ -21,6 +21,8 @@ body {
 
 main {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 a {
@@ -64,6 +66,51 @@ a:hover {
     color: var(--bs-success); 
     font-weight: bold;
     border: 2px solid var(--bs-success);
+}
+
+.btn-group {
+  display: inline-flex;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 2px solid var(--bs-primary);
+  margin-bottom: 2rem;
+  max-width: 50%;
+}
+
+.btn-feed {
+  background-color: white;
+  color: var(--bs-primary);
+  font-weight: bold;
+  padding: 0.25rem 1.25rem;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  font-family: 'Roboto', sans-serif;
+}
+
+.btn-feed:hover,
+.btn-feed.active {
+  background-color: var(--bs-primary);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .posts-tags-container {
+    flex-direction: column;/
+  }
+
+  .top-tags {
+    min-width: 100% !important;
+    margin-top: 2rem;
+  }
+
+  .posts-list {
+    width: 100%;
+  }
+
+  .btn-group {
+    min-width: 100%;
+  }
 }
 
 input.form-control:focus,
