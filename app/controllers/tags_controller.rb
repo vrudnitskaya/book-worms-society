@@ -13,7 +13,7 @@ class TagsController < ApplicationController
     @total_pages = (@total_posts.to_f / per_page).ceil
     @current_page = page
 
-    @top_tags = Tag.joins(:posts).group(:id).order('COUNT(posts.id) DESC').limit(10)
+    @top_tags = Tag.joins(:posts).group(:id).order("COUNT(posts.id) DESC").limit(10)
     @recent_posts = Post.order(created_at: :desc).limit(5)
 
     @subscribed = logged_in? && current_user.tags.exists?(@tag.id)
