@@ -20,9 +20,9 @@
         <%= link_to "Edit profile", edit_user_path(@user), class: "btn btn-primary mb-3" %>
         <% elsif logged_in? && current_user != @user %>
         <% if @is_following %>
-        <%= button_to "Unfollow", follow_path(@user), method: :delete, class: "btn btn-danger" %>
+        <%= button_to "Unfollow", follow_path(@user), method: :delete, class: "btn btn-outline-danger" %>
         <% else %>
-        <%= button_to "Follow", follows_path(followed_user_id: @user.id), method: :post, class: "btn btn-success" %>
+        <%= button_to "Follow", follows_path(followed_user_id: @user.id), method: :post, class: "btn btn-outline-success" %>
         <% end %>
         <% end %>
       </div>

@@ -21,6 +21,26 @@
   </div>
 
   <div class="mb-3">
+    <label class="form-label">Select Tags</label>
+    <div class="form-check d-flex gap-3">
+      <% Tag.all.each do |tag| %>
+        <div class="form-check">
+          <%= check_box_tag 'post[tag_ids][]', tag.id, @post.tags.include?(tag), id: "tag_#{tag.id}", class: "form-check-input" %>
+          <%= label_tag "tag_#{tag.id}", tag.name, class: "form-check-label" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mb-3" id="new-tags-container">
+    <label class="form-label">Add New Tags</label>
+    <div id="new-tags-inputs">
+      <%= text_field_tag 'post[new_tags][]', nil, class: "form-control mb-2" %>
+    </div>
+    <%= button_tag "Add More Tags", type: "button", id: "add-tag-btn", class: "btn btn-outline-success" %>
+  </div>
+
+  <div class="mb-3">
     <%= form.label :image_url, "Image URL", class: "form-label" %>
     <%= form.text_field :image_url, class: "form-control" %>
   </div>
@@ -28,4 +48,19 @@
   <div class="mt-4">
     <%= form.submit "Save", class: "btn btn-success" %>
   </div>
+<% end %>
+
+<%= javascript_tag do %>
+  document.addEventListener("DOMContentLoaded", () => {
+    const addBtn = document.getElementById("add-tag-btn");
+    const container = document.getElementById("new-tags-inputs");
+
+    addBtn.addEventListener("click", () => {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.name = "post[new_tags][]";
+      input.className = "form-control mb-2";
+      container.appendChild(input);
+    });
+  });
 <% end %>

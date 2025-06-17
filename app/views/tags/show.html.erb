@@ -7,9 +7,9 @@
             </h2>
             <% if logged_in? %>
             <% if @subscribed %>
-            <%= button_to "Unfollow", tag_follow_path(tag_id: @tag.id), method: :delete, class: "btn btn-danger" %>
+            <%= button_to "Unfollow", tag_follow_path(tag_id: @tag.id), method: :delete, class: "btn btn-outline-danger" %>
             <% else %>
-            <%= button_to "Follow", tag_follows_path(tag_id: @tag.id), method: :post, class: "btn btn-success" %>
+            <%= button_to "Follow", tag_follows_path(tag_id: @tag.id), method: :post, class: "btn btn-outline-success" %>
             <% end %>
             <% end %>
          </div>
