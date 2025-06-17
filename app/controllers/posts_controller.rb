@@ -3,14 +3,41 @@ class PostsController < ApplicationController
   before_action :set_post, only: [ :show, :edit, :update, :destroy ]
   before_action :authorize_user!, only: [ :edit, :update, :destroy ]
 
+  def index
+    @top_tags = Tag.joins(:posts).group(:id).order("COUNT(posts.id) DESC").limit(10)
+
+    per_page = 4
+    page = params[:page].to_i
+    page = 1 if page < 1
+    offset = (page - 1) * per_page
+
+    base_query = if params[:filter] == "following" && current_user
+                   followed_ids = current_user.followed_users.pluck(:id)
+                   Post.where(user_id: followed_ids)
+    else
+                   Post.all
+    end
+
+    @total_posts = base_query.count
+    @posts = base_query
+             .includes(:user)
+             .order(created_at: :desc)
+             .limit(per_page)
+             .offset(offset)
+
+    @current_page = page
+    @total_pages = (@total_posts.to_f / per_page).ceil
+  end
+
   def new
     @post = Post.new
   end
 
   def create
-    @post = current_user.posts.new(post_params)
+    @post = current_user.posts.new(post_params.except(:new_tags))
 
     if @post.save
+      assign_tags(@post)
       redirect_to @post, notice: "Post was successfully created."
     else
       render :new, status: :unprocessable_entity
@@ -37,7 +64,8 @@ class PostsController < ApplicationController
   end
 
   def update
-    if @post.update(post_params)
+    if @post.update(post_params.except(:new_tags))
+      assign_tags(@post)
       redirect_to @post, notice: "Post was successfully updated."
     else
       render :edit, status: :unprocessable_entity
@@ -62,6 +90,17 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :content, :image_url)
+    params.require(:post).permit(:title, :content, :image_url, tag_ids: [], new_tags: [])
+  end
+
+  def assign_tags(post)
+    tag_ids = Array(params[:post][:tag_ids]).reject(&:blank?).map(&:to_i)
+    new_tag_names = Array(params[:post][:new_tags]).reject(&:blank?)
+
+    new_tags = new_tag_names.map do |tag_name|
+      Tag.find_or_create_by(name: tag_name.strip)
+    end
+
+    post.tags = Tag.where(id: tag_ids) + new_tags
   end
 end

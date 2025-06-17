@@ -1,4 +1,4 @@
-<div style="position: fixed; top: 1rem; right: 1rem; width: 15rem; z-index: 1050;">
+<div style="position: fixed; top: 5rem; right: 1rem; min-width: 15rem; z-index: 1050; opacity: 0.8">
     <% flash.each do |type, message| %>
         <% bootstrap_class = case type.to_sym
           when :notice then "alert-success"

@@ -1,0 +1,56 @@
+<div class="posts-tags-container d-flex gap-5 mx-5 my-4" style="min-height: 80vh;">
+  <div class="posts-list flex-grow-1 d-flex flex-column">
+    <h2 class="mb-3 h3">All Posts</h2>
+    <div class="btn-group mb-3" role="group">
+      <%= link_to "All Posts", posts_path,
+        class: "btn btn-feed #{'active' if params[:filter].blank?}" %>
+      <%= link_to "Friends Feed", posts_path(filter: 'following'),
+        class: "btn btn-feed #{'active' if params[:filter] == 'following'}" %>
+    </div>
+    <div class="posts-content overflow-auto">
+      <% if @posts.any? %>
+      <% @posts.each do |post| %>
+      <div class="pb-2">
+        <h4><%= link_to post.title, post_path(post) %></h4>
+        <p class="mb-1">by <%= link_to post.user.username, user_path(post.user) %></p>
+        <p><%= truncate(post.content, length: 120) %></p>
+        <hr style="border: none; border-bottom: 2px solid var(--bs-primary);">
+      </div>
+      <% end %>
+      <% else %>
+      <p>No posts found.</p>
+      <% end %>
+    </div>
+  </div>
+  <div class="top-tags flex-shrink-0" style="min-width: 20%;">
+    <h2 class="mb-3 h2">Top Tags</h2>
+    <ul class="list-unstyled">
+      <% @top_tags.each do |tag| %>
+      <li><%= link_to "##{tag.name}", tag_path(tag.slug) %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+<div class="posts-pagination-container mx-5 mb-5">
+  <% if @total_pages > 1 %>
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      <% if @current_page > 1 %>
+      <li class="page-item">
+        <%= link_to "Previous", posts_path(request.query_parameters.merge(page: @current_page - 1)), class: "page-link" %>
+      </li>
+      <% end %>
+      <% (1..@total_pages).each do |p| %>
+      <li class="page-item <%= 'active' if p == @current_page %>">
+        <%= link_to p, posts_path(request.query_parameters.merge(page: p)), class: "page-link" %>
+      </li>
+      <% end %>
+      <% if @current_page < @total_pages %>
+      <li class="page-item">
+        <%= link_to "Next", posts_path(request.query_parameters.merge(page: @current_page + 1)), class: "page-link" %>
+      </li>
+      <% end %>
+    </ul>
+  </nav>
+  <% end %>
+</div>
