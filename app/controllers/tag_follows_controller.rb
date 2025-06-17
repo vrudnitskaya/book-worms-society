@@ -16,5 +16,5 @@ class TagFollowsController < ApplicationController
     tag_follow = current_user.tag_follows.find_by(tag_id: tag.id)
     tag_follow&.destroy
     redirect_to tag_path(tag), notice: "You have unsubscribed from the tag"
-  end 
+  end
 end

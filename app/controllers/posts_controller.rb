@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
-  before_action :require_login, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_user!, only: [:edit, :update, :destroy]
+  before_action :require_login, only: [ :new, :create, :edit, :update, :destroy ]
+  before_action :set_post, only: [ :show, :edit, :update, :destroy ]
+  before_action :authorize_user!, only: [ :edit, :update, :destroy ]
 
   def index
     @top_tags = Tag.joins(:posts).group(:id).order("COUNT(posts.id) DESC").limit(10)
@@ -14,9 +14,9 @@ class PostsController < ApplicationController
     base_query = if params[:filter] == "following" && current_user
                    followed_ids = current_user.followed_users.pluck(:id)
                    Post.where(user_id: followed_ids)
-                 else
+    else
                    Post.all
-                 end
+    end
 
     @total_posts = base_query.count
     @posts = base_query
