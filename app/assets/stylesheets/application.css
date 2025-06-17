@@ -52,6 +52,21 @@ a:hover {
     text-decoration: none;
 }
 
+.btn-outline-primary {
+  color: var(--bs-primary);
+  border: 2px solid var(--bs-primary);
+  background-color: transparent;
+  font-weight: bold;
+  padding: 0.25rem 1.25rem;
+  border-radius: 0.5rem;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--bs-primary);
+  color: white;
+  border: 2px solid var(--bs-primary);
+}
+
 .btn-success {
     background-color: var(--bs-success); 
     color: white; 
@@ -66,6 +81,36 @@ a:hover {
     color: var(--bs-success); 
     font-weight: bold;
     border: 2px solid var(--bs-success);
+}
+
+.btn-outline-success {
+  color: var(--bs-success);
+  border: 2px solid var(--bs-success);
+  background-color: transparent;
+  font-weight: bold;
+  padding: 0.25rem 1.25rem;
+  border-radius: 0.5rem;
+}
+
+.btn-outline-success:hover {
+  background-color: var(--bs-success);
+  color: white;
+  border: 2px solid var(--bs-success);
+}
+
+.btn-outline-danger {
+  color: var(--bs-danger);
+  border: 2px solid var(--bs-danger);
+  background-color: transparent;
+  font-weight: bold;
+  padding: 0.25rem 1.25rem;
+  border-radius: 0.5rem;
+}
+
+.btn-outline-danger:hover {
+  background-color: var(--bs-danger);
+  color: white;
+  border: 2px solid var(--bs-danger);
 }
 
 .btn-group {
