@@ -11,11 +11,15 @@ class PostsController < ApplicationController
     page = 1 if page < 1
     offset = (page - 1) * per_page
 
-    base_query = if params[:filter] == "following" && current_user
-                   followed_ids = current_user.followed_users.pluck(:id)
-                   Post.where(user_id: followed_ids)
-    else
-                   Post.all
+    base_query =
+      if params[:filter] == "following" && current_user
+        followed_ids = current_user.followed_users.pluck(:id)
+        Post.where(user_id: followed_ids)
+      elsif params[:filter] == "tag_feed" && current_user
+        tag_ids = current_user.tags.pluck(:id)
+        Post.joins(:tags).where(tags: { id: tag_ids }).distinct
+      else
+        Post.all
     end
 
     @total_posts = base_query.count

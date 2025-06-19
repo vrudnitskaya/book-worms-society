@@ -6,6 +6,8 @@
         class: "btn btn-feed #{'active' if params[:filter].blank?}" %>
       <%= link_to "Friends Feed", posts_path(filter: 'following'),
         class: "btn btn-feed #{'active' if params[:filter] == 'following'}" %>
+      <%= link_to "Tags Feed", posts_path(filter: 'tag_feed'),
+        class: "btn btn-feed #{'active' if params[:filter] == 'tag_feed'}" %>
     </div>
     <div class="posts-content overflow-auto">
       <% if @posts.any? %>
