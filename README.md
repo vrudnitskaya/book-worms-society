@@ -1,24 +1,50 @@
-# README
+# Book Worms Society
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+**Book Worms Society** is a collaborative blogging platform for book lovers. It provides a space for users to share posts about books, literary discussions, and reading experiences.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- Users can create posts on literary topics (reviews, author spotlights, reading challenges).
+- Users can comment, reply, and engage in discussions.
+- Posts and comments can be liked.
+- Posts can be bookmarked for later.
+- Users can follow others to stay updated.
+- Personalized profiles with bio and avatar.
+- Posts can be tagged; tags can be followed.
 
-* System dependencies
+---
 
-* Configuration
+## Setup Instructions
 
-* Database creation
+### Requirements
 
-* Database initialization
+- Ruby `3.x`
+- Rails `~> 8.0.1`
+- SQLite3
 
-* How to run the test suite
+### 1. Install dependencies
 
-* Services (job queues, cache servers, search engines, etc.)
+```bash
+bundle install
+```
 
-* Deployment instructions
+### 2. Setup the database
 
-* ...
+```bash
+bin/rails db:create db:migrate db:seed
+```
+
+> `db/seeds.rb` includes initial sample data.
+
+### 3. Start the server
+
+```bash
+bin/rails server
+```
+### Running Tests
+
+```bash
+bundle exec rspec
+```
+
+- Author [Valentina Rudnitskaya](https://github.com/vrudnitskaya)
