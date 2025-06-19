@@ -55,10 +55,17 @@ class PostsController < ApplicationController
 
     @bookmark_count = Bookmark.where(post_id: @post.id).count
     @bookmarked = current_user && Bookmark.exists?(user: current_user, post: @post)
-    @comments = @post.comments.where(parent_comment_id: nil).includes(:user)
+    @comments = @post.comments.where(parent_comment_id: nil).includes(:user, replies: :user)
 
     if current_user
-      @liked_comment_ids = current_user.likes.where(likeable_type: "Comment", likeable_id: @comments.map(&:id)).pluck(:likeable_id)
+      all_comment_ids = @comments.flat_map do |comment|
+        [ comment.id ] + comment.replies.pluck(:id)
+      end
+
+      @liked_comment_ids = current_user.likes.where(
+        likeable_type: "Comment",
+        likeable_id: all_comment_ids
+      ).pluck(:likeable_id)
     else
       @liked_comment_ids = []
     end
