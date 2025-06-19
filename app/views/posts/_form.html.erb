@@ -22,7 +22,7 @@
 
   <div class="mb-3">
     <label class="form-label">Select Tags</label>
-    <div class="form-check d-flex gap-3">
+    <div class="form-check d-flex gap-3 flex-wrap">
       <% Tag.all.each do |tag| %>
         <div class="form-check">
           <%= check_box_tag 'post[tag_ids][]', tag.id, @post.tags.include?(tag), id: "tag_#{tag.id}", class: "form-check-input" %>
@@ -51,16 +51,18 @@
 <% end %>
 
 <%= javascript_tag do %>
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("turbo:load", () => {
     const addBtn = document.getElementById("add-tag-btn");
     const container = document.getElementById("new-tags-inputs");
 
-    addBtn.addEventListener("click", () => {
-      const input = document.createElement("input");
-      input.type = "text";
-      input.name = "post[new_tags][]";
-      input.className = "form-control mb-2";
-      container.appendChild(input);
-    });
+    if (addBtn && container) {
+      addBtn.addEventListener("click", () => {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.name = "post[new_tags][]";
+        input.className = "form-control mb-2";
+        container.appendChild(input);
+      });
+    }
   });
 <% end %>

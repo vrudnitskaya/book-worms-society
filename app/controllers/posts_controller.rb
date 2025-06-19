@@ -11,12 +11,16 @@ class PostsController < ApplicationController
     page = 1 if page < 1
     offset = (page - 1) * per_page
 
-    base_query = if params[:filter] == "following" && current_user
-                   followed_ids = current_user.followed_users.pluck(:id)
-                   Post.where(user_id: followed_ids)
-    else
-                   Post.all
-    end
+    base_query =
+      if params[:filter] == "following" && current_user
+        followed_ids = current_user.followed_users.pluck(:id)
+        Post.where(user_id: followed_ids)
+      elsif params[:filter] == "tag_feed" && current_user
+        tag_ids = current_user.tags.pluck(:id)
+        Post.joins(:tags).where(tags: { id: tag_ids }).distinct
+      else
+        Post.all
+      end
 
     @total_posts = base_query.count
     @posts = base_query
@@ -51,10 +55,17 @@ class PostsController < ApplicationController
 
     @bookmark_count = Bookmark.where(post_id: @post.id).count
     @bookmarked = current_user && Bookmark.exists?(user: current_user, post: @post)
-    @comments = @post.comments.where(parent_comment_id: nil).includes(:user)
+    @comments = @post.comments.where(parent_comment_id: nil).includes(:user, replies: :user)
 
     if current_user
-      @liked_comment_ids = current_user.likes.where(likeable_type: "Comment", likeable_id: @comments.map(&:id)).pluck(:likeable_id)
+      all_comment_ids = @comments.flat_map do |comment|
+        [ comment.id ] + comment.replies.pluck(:id)
+      end
+
+      @liked_comment_ids = current_user.likes.where(
+        likeable_type: "Comment",
+        likeable_id: all_comment_ids
+      ).pluck(:likeable_id)
     else
       @liked_comment_ids = []
     end
