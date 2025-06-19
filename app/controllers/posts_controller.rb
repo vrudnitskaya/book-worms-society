@@ -20,7 +20,7 @@ class PostsController < ApplicationController
         Post.joins(:tags).where(tags: { id: tag_ids }).distinct
       else
         Post.all
-    end
+      end
 
     @total_posts = base_query.count
     @posts = base_query
