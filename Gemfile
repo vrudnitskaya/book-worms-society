@@ -54,7 +54,7 @@ group :development, :test do
   gem "rubocop", require: false
 
   # Testing tool
-  gem "rspec-rails", "~> 7.0.0"
+  gem "rspec-rails", "~> 8.0.2"
 end
 
 group :development do
